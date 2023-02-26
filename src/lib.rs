@@ -98,6 +98,8 @@ pub use iterator::PacketIter;
 mod codec;
 pub use codec::PacketCodec;
 
+pub mod pkt;
+
 /// An error received from pcap
 #[derive(Debug, PartialEq, Eq)]
 pub enum Error {

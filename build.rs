@@ -162,6 +162,7 @@ fn emit_cfg_flags(version: Version) {
 }
 
 fn main() {
+    env::set_var("LIBPCAP_LIBDIR", "D:\\npcap-sdk-1.13\\Lib\\x64");
     println!("cargo:rerun-if-env-changed=LIBPCAP_LIBDIR");
     println!("cargo:rerun-if-env-changed=LIBPCAP_VER");
 
@@ -170,7 +171,9 @@ fn main() {
     // that's not set, try last ditch effort to build even though library wasn't
     // explicitly given.
     let version = if let Ok(libdir) = env::var("LIBPCAP_LIBDIR") {
-        println!("cargo:rustc-link-search=native={}", libdir);
+        // println!("cargo:rustc-link-search=native={}", libdir);
+        println!("cargo:rustc-link-search=all={}", libdir);
+        println!("cargo:rustc-link-lib=static=wpcap");
         get_libpcap_version(Some(PathBuf::from(&libdir))).unwrap()
     } else if let Ok(library) = from_pkg_config() {
         Version::parse(&library.version).unwrap()
